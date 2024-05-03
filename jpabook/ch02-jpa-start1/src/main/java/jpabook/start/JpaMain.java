@@ -77,6 +77,39 @@ public class JpaMain {
         Member member2 = em.find(Member.class, "member2");
     }
 
+    public static void ensuringIdentityOfPersistentEntities(EntityManager em) {
+        Member a = em.find(Member.class, "member1");
+        Member b = em.find(Member.class, "member1");
+
+        // em.find(Member.class, "member1")를 반복해서 호출해도 영속성 컨텍스트는 1차 캐시에 있는 같은 엔티티 인스턴스를 반환한다.
+        // 따라서 둘은 같은 인스턴스고 결과는 당연히 참이다.
+        // 따라서 영속성 컨텍스트는 성능상 이점과 엔티티의 동일성을 보장한다.
+        System.out.println(a == b); // 동일성 비교
+    }
+
+    public static void create(EntityManagerFactory emf) {
+        Member memberA = new Member();
+        memberA.setId("memberA");
+        memberA.setUsername("회원A");
+
+        Member memberB = new Member();
+        memberB.setId("memberB");
+        memberB.setUsername("회원B");
+
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        // 엔티티 매니저는 데이터 변경 시 트랜잭션을 시작해야 한다.
+        transaction.begin(); // [트랜잭션] 시작
+
+        em.persist(memberA);
+        em.persist(memberB);
+        // 여기까지 INSERT SQL을 데이터베이스에 보내지 않는다.
+
+        // 커밋하는 순간 데이터베이스에 INSERT SQL을 보낸다.
+        transaction.commit(); // [트랜잭션] 커밋
+    }
+
 
     // 비즈니스 로직
     public static void logic(EntityManager em) {
