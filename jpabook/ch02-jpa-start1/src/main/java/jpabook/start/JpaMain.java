@@ -110,6 +110,23 @@ public class JpaMain {
         transaction.commit(); // [트랜잭션] 커밋
     }
 
+    public static void update(EntityManagerFactory emf) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin(); // [트랜잭션] 시작
+
+        // 영속 엔티티 조회
+        Member memberA = em.find(Member.class, "memberA");
+
+        // 영속 엔티티 데이터 수정
+        // 엔티티의 변경 사항을 데이터 베이스에 자동으로 반영하는 기능 - 변경 감지 (dirty checking)
+        // 변경 감지는 영속성 컨텍스트가 관리하는 영속 상태의 엔티티에만 적용된다.
+        memberA.setUsername("hi");
+        memberA.setAge(10);
+
+        transaction.commit();
+    }
+
 
     // 비즈니스 로직
     public static void logic(EntityManager em) {
