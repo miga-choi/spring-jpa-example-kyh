@@ -39,6 +39,26 @@ public class JpaMain {
 
     }
 
+    public static void crud(EntityManager em) {
+        // 비영속
+        // 객체를 생성한 상태 (비영속)
+        Member member = new Member();
+        member.setId("member1");
+        member.setUsername("회원1");
+
+        // 영속
+        // 객체를 저장한 상태 (영속)
+        em.persist(member);
+
+        // 준영속
+        // 회원 엔티티를 영속성 컨텍스트에서 분리, 준영속 상태
+        em.detach(member);
+
+        // 삭제
+        // 객체를 삭제한 상태 (삭제)
+        em.remove(member);
+    }
+
     // 비즈니스 로직
     public static void logic(EntityManager em) {
 
