@@ -9,7 +9,6 @@ import java.util.List;
 public class JpaMain {
 
     public static void main(String[] args) {
-
         // [엔티티 매니저 팩토리] - 생성
         // 공장 만들기, 비용이 아주 많이 든다.
         // META-INF/persistence.xml에사 <persistence-unit name="jpabook"> 찾아서 생성
@@ -36,10 +35,9 @@ public class JpaMain {
         }
 
         emf.close(); // [엔티티 매니저 팩토리] - 종료
-
     }
 
-    public static void crud(EntityManager em) {
+    public static void lifecycle(EntityManager em) {
         // 비영속
         // 객체를 생성한 상태 (비영속)
         Member member = new Member();
@@ -59,9 +57,29 @@ public class JpaMain {
         em.remove(member);
     }
 
+    public static void findFromCache(EntityManager em) {
+        // 엔티티를 생성한 상태 (비영속)
+        Member member = new Member();
+        member.setId("member1");
+        member.setUsername("회원1");
+
+        // 엔티티를 영속
+        em.persist(member);
+
+        // 1차 캐시에서 조회
+        // "영속 컨텍스트 (EntityManager)"에서 식별자 값으로 엔티티를 찾는다.
+        // 만약 찾는 엔티티가 있으면 데이터베이스를 조회하지 않고 메모리에 있는 1차 캐시에서 엔티티를 조회한다.
+        Member member1 = em.find(Member.class, "member1");
+
+        // "데이터베이스 (Database)"에서 조회
+        // 만약 em.find()를 호출 했는데 엔티티가 1차 캐시에 없으면 엔티티 매니저는 데이터베이스를 조회해서 엔티티를 생성한다.
+        // 그리고 1차 캐시에 저장한 후에 영속 상태의 엔티티를 반환한다.
+        Member member2 = em.find(Member.class, "member2");
+    }
+
+
     // 비즈니스 로직
     public static void logic(EntityManager em) {
-
         String id = "id1";
 
         // 객체를 생성한 상태 (비영속)
@@ -101,7 +119,6 @@ public class JpaMain {
         // 삭제
         // 객체를 삭제한 상태 (삭제)
         em.remove(member);
-
     }
 
 }
