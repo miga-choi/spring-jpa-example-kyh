@@ -1,5 +1,8 @@
 package jpabook.start;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
 /**
@@ -7,6 +10,12 @@ import javax.persistence.*;
  * Date: 13. 5. 24. Time: 오후 7:43
  */
 @Entity
+// @org.hibernate.annotations.DynamicInsert
+//      데이터를 저장할 때 데이터가 존재하는(null이 아닌) 필드만으로 INSERT SQL을 동적으로 생성
+@DynamicInsert
+// @org.hibernate.annotations.DynamicUpdate
+//      수정 된 데이터만 사용해서 동적으로 UPDATE SQL을 생성
+@DynamicUpdate
 @Table(name = "MEMBER")
 public class Member {
     @Id
