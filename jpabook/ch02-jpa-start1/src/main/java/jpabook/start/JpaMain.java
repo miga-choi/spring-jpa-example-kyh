@@ -124,9 +124,22 @@ public class JpaMain {
         memberA.setUsername("hi");
         memberA.setAge(10);
 
-        transaction.commit();
+        transaction.commit(); // [트랜잭션] 커밋
     }
 
+    public static void delete(EntityManagerFactory emf) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin(); // [트랜잭션] 시작
+
+        // 삭제 대상 엔티티 조회
+        Member memberA = em.find(Member.class, "memberA");
+
+        // 엔티티 삭제
+        em.remove(memberA);
+
+        transaction.commit(); // [트랜잭션] 커밋
+    }
 
     // 비즈니스 로직
     public static void logic(EntityManager em) {
