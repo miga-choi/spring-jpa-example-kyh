@@ -153,6 +153,11 @@ public class JpaMain {
         //   2. 트랜잭션 커밋 시 플러시가 자동 호출된다.
         //   3. JPQL 쿼리 실행 시 플러시가 자동 호출된다.
 
+        // 플러시 모드 옵션
+        // 엔티티 매니저에 플러시 모드를 직접 지정하려면 javax.persistence.FlushModeType을 사용하면 된다.
+        //   1. FlushModeType.AUTO: 커밋이나 쿼리를 싱행할 때 플러시 (기본값)
+        //   2. FlushModeType.COMMIT: 커밋할 때만 플러시
+        em.setFlushMode(FlushModeType.COMMIT); // 플러시 모드 설정
     }
 
     // 비즈니스 로직
