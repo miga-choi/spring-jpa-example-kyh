@@ -141,7 +141,9 @@ public class JpaMain {
         transaction.commit(); // [트랜잭션] 커밋
     }
 
-    public static void flush(EntityManager em) {
+    public static void flush(EntityManagerFactory emf) {
+        EntityManager em = emf.createEntityManager();
+
         // 플러시(flush())는 영속성 컨텍스트의 변경 내용을 데이터베이스에 반영한다.
         // 플러시를 실행하면 구체적으로 다음과 같은 일이 일어난다.
         //   1. 변경 감지가 동작해서 영속성 컨텍스트에 있는 모든 엔티티를 스냅샷과 비교해서 수정된 엔티티를 찾는다.
@@ -158,6 +160,34 @@ public class JpaMain {
         //   1. FlushModeType.AUTO: 커밋이나 쿼리를 싱행할 때 플러시 (기본값)
         //   2. FlushModeType.COMMIT: 커밋할 때만 플러시
         em.setFlushMode(FlushModeType.COMMIT); // 플러시 모드 설정
+    }
+
+    public static void detach(EntityManagerFactory emf) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin(); // [트랜잭션] 시작
+
+        // 영속성 컨텍스트가 관리하는 영속 상태의 엔티티가 영속성 컨텍스트에서 분리된(detached) 것을 준영속 상태라 한다.
+        // 준영속 상태의 엔티티는 영속성 컨텍스트가 제공하는 기능을 사용할 수 없다.
+        //
+        // 영속 상태의 엔티티를 준영속 상태로 만드는 방법은 크게 3가지다.
+        //     1. em.detach(entity): 특정 엔티티만 준영속 상태로 전환한다.
+        //     2. em.clear(): 영속성 컨텍스트를 완전히 초기화 한다.
+        //     3. em.close(): 영속성 컨텍스트를 종료한다.
+
+        // 엔티티를 준영속 상태로 전환: detach()
+        // 회원 엔티티 생성, 비영속 상태
+        Member member = new Member();
+        member.setId("memberA");
+        member.setUsername("회원A");
+
+        // 회원 엔티티 영속 상태
+        em.persist(member);
+
+        // 회원 엔티티를 영속성 컨텍스트에서 분리, 준영속 상태
+        em.detach(member);
+
+        transaction.commit(); // [트랜잭션] 커밋
     }
 
     // 비즈니스 로직
