@@ -219,6 +219,31 @@ public class JpaMain {
         transaction.commit(); // [트랜잭션] 커밋
     }
 
+    public static void close(EntityManagerFactory emf) {
+        // 영속성 컨텍스트가 관리하는 영속 상태의 엔티티가 영속성 컨텍스트에서 분리된(detached) 것을 준영속 상태라 한다.
+        // 준영속 상태의 엔티티는 영속성 컨텍스트가 제공하는 기능을 사용할 수 없다.
+        //
+        // 영속 상태의 엔티티를 준영속 상태로 만드는 방법은 크게 3가지다.
+        //     1. em.detach(entity): 특정 엔티티만 준영속 상태로 전환한다.
+        //     2. em.clear(): 영속성 컨텍스트를 완전히 초기화 한다.
+        //     3. em.close(): 영속성 컨텍스트를 종료한다.
+
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin(); // [트랜잭션] 시작
+
+        // 영속성 컨텍스트 종료: close()
+        // 영속성 컨텍스트를 종료하면 해당 영속성 컨텍스트가 관리하던 영속상태의 엔티티가 모두 준영속 상태가 된다.
+
+        // 엔티티 조회, 영속 상태
+        Member member = em.find(Member.class, "memberA");
+
+        transaction.commit(); // [트랜잭션] 커밋
+
+        // 영속성 컨텍스트 닫기(종료)
+        em.close();
+    }
+
     // 비즈니스 로직
     public static void logic(EntityManager em) {
         String id = "id1";
