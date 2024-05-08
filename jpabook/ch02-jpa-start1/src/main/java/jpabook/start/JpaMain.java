@@ -170,6 +170,18 @@ public class JpaMain {
         //     1. em.detach(entity): 특정 엔티티만 준영속 상태로 전환한다.
         //     2. em.clear(): 영속성 컨텍스트를 완전히 초기화 한다.
         //     3. em.close(): 영속성 컨텍스트를 종료한다.
+        //
+        // 준영속 상태의 특징
+        //     1. 거의 비영속 상태에 가깝다
+        //        영속성 컨텍스트가 관리하지 않으므로 1차 캐시, 쓰기 지연, 변경 감지,
+        //        지연 로딩을 포함한 영속성 컨텍스트가 제공하는 어떠한 기능도 동작하지 않는다.
+        //     2. 식별자 값을 가지고 있다
+        //        비영속 상태는 식별자 값이 없을 수도 있지만 준영속 상태는 이미
+        //        한 번 영속 상태였으므로 반드시 식별자 값을 가지고 있다.
+        //     3. 지연 로딩을 할 수 없다
+        //        지연 로딩(LAZY LOADING)은 실제 객체 대신 프록시 객체를 로딩해두고
+        //        해당 객체를 실제 사용할 때 영속성 컨텍스트를 통해 데이터를 불러오는 방법이다.
+        //        하지만 준영속 상태는 영속성 컨텍스트가 더는 관리하지 않으므로 지연 로딩 시 문제가 발생 한다.
 
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
@@ -199,6 +211,18 @@ public class JpaMain {
         //     1. em.detach(entity): 특정 엔티티만 준영속 상태로 전환한다.
         //     2. em.clear(): 영속성 컨텍스트를 완전히 초기화 한다.
         //     3. em.close(): 영속성 컨텍스트를 종료한다.
+        //
+        // 준영속 상태의 특징
+        //     1. 거의 비영속 상태에 가깝다
+        //        영속성 컨텍스트가 관리하지 않으므로 1차 캐시, 쓰기 지연, 변경 감지,
+        //        지연 로딩을 포함한 영속성 컨텍스트가 제공하는 어떠한 기능도 동작하지 않는다.
+        //     2. 식별자 값을 가지고 있다
+        //        비영속 상태는 식별자 값이 없을 수도 있지만 준영속 상태는 이미
+        //        한 번 영속 상태였으므로 반드시 식별자 값을 가지고 있다.
+        //     3. 지연 로딩을 할 수 없다
+        //        지연 로딩(LAZY LOADING)은 실제 객체 대신 프록시 객체를 로딩해두고
+        //        해당 객체를 실제 사용할 때 영속성 컨텍스트를 통해 데이터를 불러오는 방법이다.
+        //        하지만 준영속 상태는 영속성 컨텍스트가 더는 관리하지 않으므로 지연 로딩 시 문제가 발생 한다.
 
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
@@ -227,6 +251,18 @@ public class JpaMain {
         //     1. em.detach(entity): 특정 엔티티만 준영속 상태로 전환한다.
         //     2. em.clear(): 영속성 컨텍스트를 완전히 초기화 한다.
         //     3. em.close(): 영속성 컨텍스트를 종료한다.
+        //
+        // 준영속 상태의 특징
+        //     1. 거의 비영속 상태에 가깝다
+        //        영속성 컨텍스트가 관리하지 않으므로 1차 캐시, 쓰기 지연, 변경 감지,
+        //        지연 로딩을 포함한 영속성 컨텍스트가 제공하는 어떠한 기능도 동작하지 않는다.
+        //     2. 식별자 값을 가지고 있다
+        //        비영속 상태는 식별자 값이 없을 수도 있지만 준영속 상태는 이미
+        //        한 번 영속 상태였으므로 반드시 식별자 값을 가지고 있다.
+        //     3. 지연 로딩을 할 수 없다
+        //        지연 로딩(LAZY LOADING)은 실제 객체 대신 프록시 객체를 로딩해두고
+        //        해당 객체를 실제 사용할 때 영속성 컨텍스트를 통해 데이터를 불러오는 방법이다.
+        //        하지만 준영속 상태는 영속성 컨텍스트가 더는 관리하지 않으므로 지연 로딩 시 문제가 발생 한다.
 
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
@@ -242,6 +278,72 @@ public class JpaMain {
 
         // 영속성 컨텍스트 닫기(종료)
         em.close();
+    }
+
+    public static void merge(EntityManagerFactory emf) {
+        // 병합: merge()
+        // 준영속 상태의 엔티티를 다시 영속 상태로 변경하려면 병합을 사용하면 된다.
+        // merge() 메소드는 준영속 상태의 엔티티를 받아서 그 정보로 새로운 영속 상태의 엔티티를 반환한다.
+
+        // member 엔티티는 createMember() 메소드의 영속성 컨텍스트1에서
+        // 영속 상태였다가 영속성 컨텍스트1이 종료되면서 준영속 상태가 되었다.
+        // 따라서 createMember() 메소드는 준영속 상태의 member 엔티티를 반환한다.
+        Member member = createMember(emf, "memberA", "회원A");
+
+        // member.setUsername("회원명변경")을 호출해서 회원 이름을
+        // 변경했지만 준영속 상태인 member 엔티티를 관리하는 영속성 컨텍스트가
+        // 더는 존재하지 않으므로 수정 사항을 데이터베이스에 반영할 수 없다.
+        member.setUsername("회원명변경"); // 준영속 상태에서 변경
+
+        // 준영속 상태의 엔티티를 수정하려면 준영속 상태를 다시 영속 상태로 변경해야 하는데
+        // 이때 병합(merge())을 사용한다. 예제 코드를 이어가면 mergeMember() 메소드에서
+        // 새로운 영속성 컨텍스트2를 시작하고 em2.merge(member)를 호출해서 준영속 상태의
+        // member 엔티티를 영속성 컨텍스트2가 관리하는 영속 상태로 변경했다.
+        // 영속 상태이므로 트랜잭션을 커밋할 때 수정했던 회원명이 데이터베이스에 반영된다
+        // (정확히는 member 엔티티가 준영속 상태에서 영속 상태로 변경되는 것은
+        // 아니고 mergeMember라는 새로운 영속 상태의 엔티티가 반환된다).
+        mergeMember(emf, member);
+    }
+
+    public static Member createMember(EntityManagerFactory emf, String id, String username) {
+        // == 영속성 컨텍스트1 시작 == /
+        EntityManager em1 = emf.createEntityManager();
+        EntityTransaction tx1 = em1.getTransaction();
+        tx1.begin();
+
+        Member member = new Member();
+        member.setId(id);
+        member.setUsername(username);
+
+        em1.persist(member);
+        tx1.commit();
+
+        em1.close(); // 영속성 컨텍스트1 종료, member 엔티티는 준영속 상태가 된다.
+        // == 영속성 컨텍스트1 종료 == //
+
+        return member;
+    }
+
+    public static void mergeMember(EntityManagerFactory emf, Member member) {
+        // == 영속성 컨텍스트2 시작 == //
+        EntityManager em2 = emf.createEntityManager();
+        EntityTransaction tx2 = em2.getTransaction();
+
+        tx2.begin();
+        Member mergeMember = member;
+        tx2.commit();
+
+        // 준영속 상태
+        System.out.println("member = " + member.getUsername()); // member = 회원명변경
+
+        // 영속 상태
+        System.out.println("mergeMember = " + mergeMember.getUsername()); // mergeMember = 회원명변경
+
+        System.out.println("em2 contains member = " + em2.contains(member)); // em2 contains member = false
+        System.out.println("em2 contains mergeMember = " + em2.contains(mergeMember)); // em2 contains mergeMember = true
+
+        em2.close();
+        // == 영속성 컨텍스트 종료 == //
     }
 
     // 비즈니스 로직
