@@ -330,7 +330,14 @@ public class JpaMain {
         EntityTransaction tx2 = em2.getTransaction();
 
         tx2.begin();
-        Member mergeMember = member;
+
+        // merge()는 파라미터로 넘어온 준영속 엔티티를 사용해서 새롭게 병합된 영속 상태의 엔티티를 반환한다.
+        // 파라미터로 넘어온 엔티티는 병합 후에도 준영속 상태로 남아 있다.
+        Member mergeMember = em2.merge(member);
+
+        // 병합이 끝나고 tx2.commit()을 호출해서 트랜잭션을 커밋했다.
+        // mergeMember의 이름이 "회원1"에서 "회원명변경"으로 변경되었으므로
+        // 변경 감지 기능이 동작해서 변경 내용을 데이터베이스에 반영한다.
         tx2.commit();
 
         // 준영속 상태
@@ -339,8 +346,22 @@ public class JpaMain {
         // 영속 상태
         System.out.println("mergeMember = " + mergeMember.getUsername()); // mergeMember = 회원명변경
 
+        // em1.contains(member)는 영속성 컨텍스트가 파라미터로 넘어온 엔티티를 관리하는지 확인하는 메소드다.
+        // member를 파라미터로 넘겼을 때는 반환 결과가 false다.
+        // 반면에 mergeMember는 true를 반환한다.
+        // 따라서 준영속 상태인 member엔티티와 영속 상태인 mergeMember 엔티티는 서로 다른 인스턴스다.
         System.out.println("em2 contains member = " + em2.contains(member)); // em2 contains member = false
         System.out.println("em2 contains mergeMember = " + em2.contains(mergeMember)); // em2 contains mergeMember = true
+
+        // 준영속 상태인 member는 이제 사용할 필요가 없다.
+        // 따라서 다음과 같이 준영속 엔티티를 참조하던 변수를 영속 엔티티를 참조하도록 변경하는 것이 안전하다.
+        // Member mergeMember = em2.merge(member); -> 아래코드로 변경
+        member = em2.merge(member);
+        System.out.println("em2 contains member = " + em2.contains(member)); // em2 contains member = true
+
+        Member member2 = new Member();
+        Member newMember = em2.merge(member2); // 비영속 병합
+        System.out.println("em2 contains newMember = " + em2.contains(newMember)); // em2 contains newMember = true
 
         em2.close();
         // == 영속성 컨텍스트 종료 == //
