@@ -36,12 +36,19 @@ import java.util.Date;
         }
 )
 public class Member {
-
+    /**
+     * Id: 기본 키 (Primary Key)
+     */
     @Id
     @Column(name = "ID")
     private String id;
 
-    @Column(name = "NAME")
+    /**
+     * 제약조건
+     * nullable: not null
+     * length: 문자의 크기
+     */
+    @Column(name = "NAME", nullable = false, length = 10)
     private String username;
 
     private Integer age;
