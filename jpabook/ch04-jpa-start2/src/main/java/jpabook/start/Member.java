@@ -23,10 +23,14 @@ import java.util.Date;
 //   3. 저장할 필드에 final을 사용하면 안 된다.
 @Entity
 @Table(
+        // 테이블 이름
         name = "MEMBER",
+        // 유니크 제약조건 추가
         uniqueConstraints = {
-                @UniqueConstraint( //추가 //**
+                @UniqueConstraint(
+                        // 제약조건 명
                         name = "NAME_AGE_UNIQUE",
+                        // 복합 유니크 제약조건
                         columnNames = {"NAME", "AGE"}
                 )
         }
@@ -75,7 +79,6 @@ public class Member {
     public Member(String username) {
         this.username = username;
     }
-
 
     //Getter, Setter
 
