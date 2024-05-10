@@ -1,6 +1,6 @@
 package jpabook.start;
 
-import javax.persistence.*;  //**
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -41,47 +41,41 @@ public class Member {
     @Column(name = "ID")
     private String id;
 
-    @Column(name = "NAME", nullable = false, length = 10) //추가 //**
-//    @Column(name = "NAME") //추가 //**
+    @Column(name = "NAME")
     private String username;
 
     private Integer age;
 
-    //=== 추가
+    /**
+     * roleType: 자바의 enum을 사용해서 회원의 타입을 구분했다.
+     * 일반 회원은 USER, 관리자는 ADMIN이다.
+     * 이처럼 자바의 enum을 사용하려면 @Enumerated 어노테이션으로 매핑해야 한다.
+     */
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
+    /**
+     * createdDate: 자바의 날짜 타입은 @Temporal을 사용해서 매핑한다.
+     */
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    /**
+     * lastModifiedDate: 자바의 날짜 타입은 @Temporal을 사용해서 매핑한다.
+     */
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
+    /**
+     * description: 회원을 설명하는 필드는 길이 제한이 없다.
+     * 따라서 데이터베이스의 VARCHAR 타입 대신에 CLOB 타입으로 저장해야 한다.
+     *
+     * @Lob을 사용하면 CLOB, BLOB 타입을 매핑할 수 있다.
+     */
     @Lob
     private String description;
 
-    @Transient
-    private String temp;
-
-    /**
-     * JPA가 엔티티 객체를 생성할 때 기본 생성자를 사용하므로 이 생성자는 반드시 있어야 한다.
-     * 자바는 생성자가 하나도 없으면 다음과 같은 기본 생성자를 자동으로 만든다.
-     */
-    // 기본 생성자
-    public Member() {
-    }
-
-    /**
-     * 다음과 같이 생성자를 하나 이상 만들면 자바는 기본 생성자를 자동으로 만들지 않는다.
-     * 이때는 기본 생성자를 직접 만들어야 한다.
-     */
-    // 임의의 생성자
-    public Member(String username) {
-        this.username = username;
-    }
-
-    //Getter, Setter
-
+    // Getter, Setter
     public String getId() {
         return id;
     }
@@ -136,13 +130,5 @@ public class Member {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getTemp() {
-        return temp;
-    }
-
-    public void setTemp(String temp) {
-        this.temp = temp;
     }
 }
