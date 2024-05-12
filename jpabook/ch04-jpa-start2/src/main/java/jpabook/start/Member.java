@@ -22,6 +22,13 @@ import java.util.Date;
 //   2. final 클래스, enum, interface, inner 클래스에서는 사용할 수 없다.
 //   3. 저장할 필드에 final을 사용하면 안 된다.
 @Entity
+// @Table
+//   매핑할 DDL:
+//     ALTER TABLE MEMBER
+//     ADD CONSTRAINT [uniqueConstraints.name] UNIQUE (uniqueConstraints.columnNames)
+//   생성된 DDL:
+//     ALTER TABLE MEMBER
+//     ADD CONSTRAINT [NAME_AGE_UNIQUE] UNIQUE (NAME, AGE)
 @Table(
         // 테이블 이름
         name = "MEMBER",
@@ -35,12 +42,47 @@ import java.util.Date;
                 )
         }
 )
+// @SequenceGenerator
+//   시퀀스 생성기
+//   - name: 식별자 생성기 이름, 필수
+//   - sequenceName: 데이터베이스에 등록되어 있는 시퀀스 이름, 기본값: hibernate_sequence
+//   - initialValue: DDL 생성 시에만 사용됨, 시퀀스 DDL을 생성할 때 처음 시작하는 수를 지정한다, 기본값: 1
+//   - allocationSize: 시퀀스 한 번 호출에 증가하는 수 (성능 최적화에 사용됨), 기본값: 50
+//   - catalog: 데이터베이스 catalog 이름
+//   - schema: 데이터베이스 schema 이름
+//   매팽할 DDL:
+//     CREATE SEQUENCE [sequenceName]
+//     START WITH [initialValue] INCREMENT BY [allocationSize]
+@SequenceGenerator(
+        // 식별자 생성기 이름, 필수
+        name = "MEMBER_SEQ_GENERATOR",
+        // 데이터베이스에 등록되어 있는 시퀀스 이름, 기본값: hibernate_sequence
+        sequenceName = "MEMBER_SEQ",
+        // DDL 생성 시에만 사용됨, 시퀀스 DDL을 생성할 때 처음 시작하는 수를 지정한다, 기본값: 1
+        initialValue = 1,
+        // 시퀀스 한 번 호출에 증가하는 수 (성능 최적화에 사용됨), 기본값: 50
+        allocationSize = 1
+)
 public class Member {
     /**
-     * Id: 기본 키 (Primary Key)
+     * Id:
+     * - 기본 키 (Primary Key)
+     * GeneratedValue:
+     * - 자동 생성 (대리 키 사용 방식)
+     * - 생략 시 직접 할당
+     * GenerationType:
+     * - 자동 생성 기본 키 타입
+     * 1. GenerationType.IDENTITY: 기본 키 생성을 데이터베이스에 위임한다.
+     * 2. GenerationType.SEQUENCE: 데이터베이스 시퀀스를 사용해서 기본 키를 할당한다.
+     * 3. GenerationType.TABLE: 키 생성 테이블을 사용한다.
      */
     @Id
     @Column(name = "ID")
+    // @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY 전략
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE, // SEQUENCE 전략
+            generator = "MEMBER_SEQ_GENERATOR" // @SequenceGenerator로 등록한 시퀀스 생성키를 선택
+    )
     private String id;
 
     /**

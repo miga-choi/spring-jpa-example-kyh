@@ -37,7 +37,7 @@ public class JpaMain {
 
         String id = "id1";
         Member member = new Member();
-        member.setId(id);
+        member.setId(id); // 기본 키 직접 할당
         member.setUsername("지한");
         member.setAge(2);
 
