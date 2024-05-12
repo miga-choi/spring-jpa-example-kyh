@@ -63,6 +63,35 @@ import java.util.Date;
         // 시퀀스 한 번 호출에 증가하는 수 (성능 최적화에 사용됨), 기본값: 50
         allocationSize = 1
 )
+// TABLE 전략:
+//   TABLE 전략은 키 생성 전용 테이블을 하나 만들고 여기에 이름과 값으로 사용할 컬럼을 만들어 데이터베이스 시퀀스를 흉내내는 전략이다.
+//   이 전략은 테이블을 사용하므로 모든 데이터베이스에 적용할 수 있다.
+// @TableGenerator
+//   테이블 키 생성기
+//   - name: 식별자 생성기 이름, 필수
+//   - table: 키생성 테이블명, 기본값: hibernate_sequences
+//   - pkColumnName: 시퀀스 컬럼명, 기본값: sequence_name
+//   - valueColumnName: 시퀀스 값 컬럼명, 기본값: next_val
+//   - pkColumnValue: 키로 사용할 값 이름, 기본값: 엔티티 이름
+//   - initialValue: 초기 값, 마지막으로 생성된 값이 기준이다, 기본값: 0
+//   - allocationSize: 시퀀스 한 번 호출에 증가하는 수 (성능 최적화에 사용됨), 기본값: 50
+//   - catalog: 데이터베이스 catalog 이름
+//   - schema: 데이터베이스 schema 이름
+//   - uniqueConstraints: 유니크 제약 조건을 지정할 수 있다
+//   TABLE 전략 키 생성 DDL:
+//       CREATE TABLE [table] (
+//         [pkColumnName] VARCHAR(255) NOT NULL,
+//         [valueColumnName] BIGINT,
+//         PRIMARY KEY ( [pkColumnName] )
+//       )
+@TableGenerator(
+        name = "MEMBER_TABLE_SEQ_GENERATOR",
+        table = "MY_TABLE_SEQUENCES",
+        pkColumnName = "sequence_name",
+        valueColumnName = "next_val",
+        pkColumnValue = "MEMBER_TABLE_SEQ",
+        allocationSize = 1
+)
 public class Member {
     /**
      * Id:
@@ -79,9 +108,14 @@ public class Member {
     @Id
     @Column(name = "ID")
     // @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY 전략
+    // @GeneratedValue(
+    //         strategy = GenerationType.SEQUENCE, // SEQUENCE 전략
+    //         generator = "MEMBER_SEQ_GENERATOR" // @SequenceGenerator로 등록한 시퀀스 생성키를 선택
+    // )
+    // @SequenceGenerator() // @GeneratedValue 옆에 사용해도 된다.
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE, // SEQUENCE 전략
-            generator = "MEMBER_SEQ_GENERATOR" // @SequenceGenerator로 등록한 시퀀스 생성키를 선택
+            strategy = GenerationType.TABLE,
+            generator = "MEMBER_TABLE_SEQ_GENERATOR"
     )
     private String id;
 
