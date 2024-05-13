@@ -11,7 +11,14 @@ import java.util.Date;
 /**
  * 객체와 테이블 매핑: @Entity, @Table
  * 기본키 매핑: @Id
- * 필드와 컬럼 매핑: @Column
+ * 필드와 컬럼 매핑:
+ * - @Column: 컬럼을 매핑한다.
+ * - @Enumerated: 자바의 enum 타입을 매핑한다.
+ * - @Temporal: 날짜 타입을 매핑한다.
+ * - @Lob: BLOB, CLOB 타입을 매핑한다.
+ * - @Transient: 특정 필드를 데이터베이스에 매핑하지 않는다.
+ * 기타:
+ * - @Access: JPA가 엔티티에 접근하는 방식을 지정한다.
  * 연관관계 매핑: @ManyToOne, @JoinColumn
  */
 // @Entity
