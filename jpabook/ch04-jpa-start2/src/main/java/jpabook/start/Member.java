@@ -100,10 +100,16 @@ public class Member {
      * - 자동 생성 (대리 키 사용 방식)
      * - 생략 시 직접 할당
      * GenerationType:
-     * - 자동 생성 기본 키 타입
-     * 1. GenerationType.IDENTITY: 기본 키 생성을 데이터베이스에 위임한다.
-     * 2. GenerationType.SEQUENCE: 데이터베이스 시퀀스를 사용해서 기본 키를 할당한다.
-     * 3. GenerationType.TABLE: 키 생성 테이블을 사용한다.
+     * - 자동 생성 전략 (strategy)
+     * -- 1. GenerationType.AUTO: 기본 값.
+     * --    선택한 데이터베이스 방언에 따라 IDENTITY, SEQUENCE, TABLE 전략 중 하나를 자동으로 선택한다.
+     * --    AUTO 전략의 장점은 데이터베이스를 변경해도 코드를 수정할 필요가 없다는 것이다.
+     * --    특히 키 생성 전략이 아직 확정되지 않은 개발 초기 단계나 프로토타입 개발 시 편리하게 사용할 수 있다.
+     * --    AUTO를 사용할 때 SEQUENCE나 TABLE 전략이 선택되면 시퀀스나 키 생성용 테이블을 미리 만들어 두어야 한다.
+     * --    만약 스키마 자동 생성 기능을 사용한다면 하이버네이트가 기본값을 사용해서 적절한 시퀀스나 키 생성용 테이블을 만들어 줄 것이다.
+     * -- 2. GenerationType.IDENTITY: 기본 키 생성을 데이터베이스에 위임한다.
+     * -- 3. GenerationType.SEQUENCE: 데이터베이스 시퀀스를 사용해서 기본 키를 할당한다.
+     * -- 4. GenerationType.TABLE: 키 생성 테이블을 사용한다.
      */
     @Id
     @Column(name = "ID")
@@ -113,10 +119,11 @@ public class Member {
     //         generator = "MEMBER_SEQ_GENERATOR" // @SequenceGenerator로 등록한 시퀀스 생성키를 선택
     // )
     // @SequenceGenerator() // @GeneratedValue 옆에 사용해도 된다.
-    @GeneratedValue(
-            strategy = GenerationType.TABLE,
-            generator = "MEMBER_TABLE_SEQ_GENERATOR"
-    )
+    // @GeneratedValue(
+    //         strategy = GenerationType.TABLE,
+    //         generator = "MEMBER_TABLE_SEQ_GENERATOR"
+    // )
+    @GeneratedValue(strategy = GenerationType.AUTO) // 기본 값
     private String id;
 
     /**
