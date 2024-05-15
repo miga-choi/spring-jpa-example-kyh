@@ -203,6 +203,18 @@ public class Member {
 
     /**
      * createdDate: 자바의 날짜 타입은 @Temporal을 사용해서 매핑한다.
+     * ------------------------------------------------------------------------------------------------
+     * Temporal:
+     * -  날짜 타입(java.util.Date, java.util.Calendar)을 매핑할 때 사용한다.
+     * -- value:
+     * --   TemporalType은 필수로 지정해야 한다.
+     * TemporalType:
+     * -  TemporalType.DATE:
+     * --   날짜, 데이터베이스 date 타입과 매핑 (예: 2013-10-11)
+     * -  TemporalType.DATE:
+     * --   시간, 데이터베이스 time 타입과 매핑 (예: 11:11:11)
+     * -  TemporalType.TIMESTAMP:
+     * --   날짜와 시간, 데이터베이스 timestamp 타입과 매핑 (예: 2013-10-11 11:11:11)
      */
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
