@@ -99,6 +99,13 @@ import java.util.Date;
         pkColumnValue = "MEMBER_TABLE_SEQ",
         allocationSize = 1
 )
+// Access:
+//   JPA가 엔티티 데이터에 접근하는 방식을 지정한다.
+// - 필드 접근: AccessType.FIELD로 지정한다. 필드에 직접 접근한다. 필드 접근 권한이 private이어도 접근할 수 있다.
+// - 프로퍼티 접근: AccessType.PROPERTY로 지정한다. 접근자 Getter를 사용한다.
+// - Access를 설정하지 않으면 @Id의 위치를 기준으로 접근 방식이 설정된다.
+// - 본 예제는 @Id가 필드에 있으므로 @Access(AccessType.FIELD)로 설정한 것과 같다. 따라서 @Access는 생략해도 된다.
+@Access(AccessType.FIELD)
 public class Member {
     /**
      * Id:
@@ -158,7 +165,7 @@ public class Member {
      * --  3. GenerationType.SEQUENCE: 데이터베이스 시퀀스를 사용해서 기본 키를 할당한다.
      * --  4. GenerationType.TABLE: 키 생성 테이블을 사용한다.
      */
-    @Id
+    @Id // @Id가 FIELD에 지정됨
     @Column(name = "ID")
     // @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY 전략
     // @GeneratedValue(
@@ -230,11 +237,27 @@ public class Member {
      * 따라서 데이터베이스의 VARCHAR 타입 대신에 CLOB 타입으로 저장해야 한다.
      *
      * @Lob을 사용하면 CLOB, BLOB 타입을 매핑할 수 있다.
+     * ------------------------------------------------------------------------------------------------
+     * Lob:
+     * -  데이터베이스 BLOB, CLOB 타입과 매핑한다.
+     * -  @Lob에는 지정할 수 있는 속성이 없다. 대신에 매핑하는 필드 타입이 문자면 CLOB으로 매핑하고 나머지는 BLOB으로 매핑한다.
+     * -- CLOB: String, char[], java.sql.CLOB
+     * -- BLOB: byte[], java.sql.BLOB
      */
     @Lob
     private String description;
 
+    /**
+     * Transient:
+     * -  이 필드는 매핑하지 않는다. 따라서 데이터베이스에 저장하지 않고 조회하지도 않는다. 객체에 임시로 어떤 값을 보관하고 싶을 때 사용한다.
+     */
+    @Transient
+    private Integer temp;
+
     // Getter, Setter
+
+    // @Id // @Id가 PROPERTY에 지정됨
+    // @Id가 프로퍼티에 있으므로 @Access(AccessType.PROPERTY)로 설정한 것과 같다. 따라서 @Access는 생략해도 된다.
     public String getId() {
         return id;
     }
@@ -290,4 +313,12 @@ public class Member {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    // 필드, 프로퍼티 접근 함께 사용
+    // @Id가 필드에 있으므로 기본은 필드 접근 방식을 사용하고 getFullName()만 프로퍼티 접근 방식을 사용한다.
+    // 따라서 회원 엔티티를 저장하면 회원 테이블의 FULLNAME 컬럼에 firstName + lastName의 결과가 저장된다.
+    // @Access(AccessType.PROPERTY)
+    // public String getFullName() {
+    //     return firstName + lastName;
+    // }
 }
