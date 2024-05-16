@@ -28,7 +28,7 @@ import java.util.Date;
 //   1. 기본 생성자는 필수다 (파라미터가 없는 public 또는 protected 생성자).
 //   2. final 클래스, enum, interface, inner 클래스에서는 사용할 수 없다.
 //   3. 저장할 필드에 final을 사용하면 안 된다.
-@Entity
+// @Entity
 // @Table
 //   매핑할 DDL:
 //     ALTER TABLE MEMBER
@@ -36,19 +36,19 @@ import java.util.Date;
 //   생성된 DDL:
 //     ALTER TABLE MEMBER
 //     ADD CONSTRAINT [NAME_AGE_UNIQUE] UNIQUE (NAME, AGE)
-@Table(
-        // 테이블 이름
-        name = "MEMBER",
-        // 유니크 제약조건 추가
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        // 제약조건 명
-                        name = "NAME_AGE_UNIQUE",
-                        // 복합 유니크 제약조건
-                        columnNames = {"NAME", "AGE"}
-                )
-        }
-)
+// @Table(
+//         // 테이블 이름
+//         name = "MEMBER",
+//         // 유니크 제약조건 추가
+//         uniqueConstraints = {
+//                 @UniqueConstraint(
+//                         // 제약조건 명
+//                         name = "NAME_AGE_UNIQUE",
+//                         // 복합 유니크 제약조건
+//                         columnNames = {"NAME", "AGE"}
+//                 )
+//         }
+// )
 // @SequenceGenerator
 //   시퀀스 생성기
 //   - name: 식별자 생성기 이름, 필수
@@ -60,16 +60,16 @@ import java.util.Date;
 //   매팽할 DDL:
 //     CREATE SEQUENCE [sequenceName]
 //     START WITH [initialValue] INCREMENT BY [allocationSize]
-@SequenceGenerator(
-        // 식별자 생성기 이름, 필수
-        name = "MEMBER_SEQ_GENERATOR",
-        // 데이터베이스에 등록되어 있는 시퀀스 이름, 기본값: hibernate_sequence
-        sequenceName = "MEMBER_SEQ",
-        // DDL 생성 시에만 사용됨, 시퀀스 DDL을 생성할 때 처음 시작하는 수를 지정한다, 기본값: 1
-        initialValue = 1,
-        // 시퀀스 한 번 호출에 증가하는 수 (성능 최적화에 사용됨), 기본값: 50
-        allocationSize = 1
-)
+// @SequenceGenerator(
+//         // 식별자 생성기 이름, 필수
+//         name = "MEMBER_SEQ_GENERATOR",
+//         // 데이터베이스에 등록되어 있는 시퀀스 이름, 기본값: hibernate_sequence
+//         sequenceName = "MEMBER_SEQ",
+//         // DDL 생성 시에만 사용됨, 시퀀스 DDL을 생성할 때 처음 시작하는 수를 지정한다, 기본값: 1
+//         initialValue = 1,
+//         // 시퀀스 한 번 호출에 증가하는 수 (성능 최적화에 사용됨), 기본값: 50
+//         allocationSize = 1
+// )
 // TABLE 전략:
 //   TABLE 전략은 키 생성 전용 테이블을 하나 만들고 여기에 이름과 값으로 사용할 컬럼을 만들어 데이터베이스 시퀀스를 흉내내는 전략이다.
 //   이 전략은 테이블을 사용하므로 모든 데이터베이스에 적용할 수 있다.
@@ -91,21 +91,21 @@ import java.util.Date;
 //         [valueColumnName] BIGINT,
 //         PRIMARY KEY ( [pkColumnName] )
 //       )
-@TableGenerator(
-        name = "MEMBER_TABLE_SEQ_GENERATOR",
-        table = "MY_TABLE_SEQUENCES",
-        pkColumnName = "sequence_name",
-        valueColumnName = "next_val",
-        pkColumnValue = "MEMBER_TABLE_SEQ",
-        allocationSize = 1
-)
+// @TableGenerator(
+//         name = "MEMBER_TABLE_SEQ_GENERATOR",
+//         table = "MY_TABLE_SEQUENCES",
+//         pkColumnName = "sequence_name",
+//         valueColumnName = "next_val",
+//         pkColumnValue = "MEMBER_TABLE_SEQ",
+//         allocationSize = 1
+// )
 // Access:
 //   JPA가 엔티티 데이터에 접근하는 방식을 지정한다.
 // - 필드 접근: AccessType.FIELD로 지정한다. 필드에 직접 접근한다. 필드 접근 권한이 private이어도 접근할 수 있다.
 // - 프로퍼티 접근: AccessType.PROPERTY로 지정한다. 접근자 Getter를 사용한다.
 // - Access를 설정하지 않으면 @Id의 위치를 기준으로 접근 방식이 설정된다.
 // - 본 예제는 @Id가 필드에 있으므로 @Access(AccessType.FIELD)로 설정한 것과 같다. 따라서 @Access는 생략해도 된다.
-@Access(AccessType.FIELD)
+// @Access(AccessType.FIELD)
 public class Member {
     /**
      * Id:
