@@ -28,7 +28,7 @@ import java.util.Date;
 //   1. 기본 생성자는 필수다 (파라미터가 없는 public 또는 protected 생성자).
 //   2. final 클래스, enum, interface, inner 클래스에서는 사용할 수 없다.
 //   3. 저장할 필드에 final을 사용하면 안 된다.
-// @Entity
+@Entity
 // @Table
 //   매핑할 DDL:
 //     ALTER TABLE MEMBER
@@ -36,19 +36,19 @@ import java.util.Date;
 //   생성된 DDL:
 //     ALTER TABLE MEMBER
 //     ADD CONSTRAINT [NAME_AGE_UNIQUE] UNIQUE (NAME, AGE)
-// @Table(
-//         // 테이블 이름
-//         name = "MEMBER",
-//         // 유니크 제약조건 추가
-//         uniqueConstraints = {
-//                 @UniqueConstraint(
-//                         // 제약조건 명
-//                         name = "NAME_AGE_UNIQUE",
-//                         // 복합 유니크 제약조건
-//                         columnNames = {"NAME", "AGE"}
-//                 )
-//         }
-// )
+@Table(
+        // 테이블 이름
+        name = "MEMBER",
+        // 유니크 제약조건 추가
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        // 제약조건 명
+                        name = "NAME_AGE_UNIQUE",
+                        // 복합 유니크 제약조건
+                        columnNames = {"NAME", "AGE"}
+                )
+        }
+)
 // @SequenceGenerator
 //   시퀀스 생성기
 //   - name: 식별자 생성기 이름, 필수
@@ -105,7 +105,7 @@ import java.util.Date;
 // - 프로퍼티 접근: AccessType.PROPERTY로 지정한다. 접근자 Getter를 사용한다.
 // - Access를 설정하지 않으면 @Id의 위치를 기준으로 접근 방식이 설정된다.
 // - 본 예제는 @Id가 필드에 있으므로 @Access(AccessType.FIELD)로 설정한 것과 같다. 따라서 @Access는 생략해도 된다.
-// @Access(AccessType.FIELD)
+@Access(AccessType.FIELD)
 public class Member {
     /**
      * Id:

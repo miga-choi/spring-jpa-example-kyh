@@ -10,8 +10,8 @@ import java.util.List;
 
 @Entity
 public class Member {
-
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
@@ -21,7 +21,7 @@ public class Member {
     private String street;
     private String zipcode;
 
-    //Getter, Setter
+    // Getter, Setter
 
     public Long getId() {
         return id;
