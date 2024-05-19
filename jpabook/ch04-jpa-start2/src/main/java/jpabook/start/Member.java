@@ -303,6 +303,14 @@ public class Member {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
+    public Member() {
+    }
+
+    public Member(String id, String username) {
+        this.id = id;
+        this.username = username;
+    }
+
     // Getter, Setter
 
     // 연관관계 설정
