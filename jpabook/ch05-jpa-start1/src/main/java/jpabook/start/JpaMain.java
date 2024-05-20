@@ -19,6 +19,7 @@ public class JpaMain {
             testSave(em);
             testSelect1(em);
             testSelect2(em);
+            testUpdate(em);
             tx.commit(); // 트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,7 +61,7 @@ public class JpaMain {
         // 출력 결과: 팀 이름 = 팀1
     }
 
-    // 1. 객체 그래프 탐색
+    // 2. 객체지향 쿼리 사용 (JPQL)
     public static void testSelect2(EntityManager em) {
         String jpq1 = "select m from Member m join m.team t where t.name=:teamName";
         List<Member> resultList = em.createQuery(jpq1, Member.class)
@@ -71,6 +72,16 @@ public class JpaMain {
         }
         // 출력 결과: [query] member.username = 회원1
         // 출력 결과: [query] member.username = 회원2
+    }
+
+    public static void testUpdate(EntityManager em) {
+        // 새로운 팀2
+        Team team2 = new Team("team2", "팀2");
+        em.persist(team2);
+
+        // 회원1에 새로운 팀2 설정
+        Member member = em.find(Member.class, "member1");
+        member.setTemm(team2);
     }
 
 }
