@@ -20,6 +20,7 @@ public class JpaMain {
             testSelect1(em);
             testSelect2(em);
             testUpdate(em);
+            testDelete(em);
             tx.commit(); // 트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,6 +83,16 @@ public class JpaMain {
         // 회원1에 새로운 팀2 설정
         Member member = em.find(Member.class, "member1");
         member.setTemm(team2);
+    }
+
+    public static void testDelete(EntityManager em) {
+        Member member1 = em.find(Member.class, "member1");
+        member1.setTemm(null); // 연관관계 제거
+
+        Team team1 = em.find(Team.class, "team1");
+        Member member2 = em.find(Member.class, "member2");
+        member2.setTemm(null); // 회원2 연관관계 제거
+        em.remove(team1);
     }
 
 }
