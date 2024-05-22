@@ -16,12 +16,13 @@ public class JpaMain {
 
         try {
             tx.begin(); // 트랜잭션 시작
-            testSave(em);
-            testSelect1(em);
-            testSelect2(em);
-            testUpdate(em);
-            testDelete(em);
-            biDirection(em);
+//            testSave(em);
+//            testSelect1(em);
+//            testSelect2(em);
+//            testUpdate(em);
+//            testDelete(em);
+//            biDirection(em);
+            testSave2(em);
             tx.commit(); // 트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,6 +106,23 @@ public class JpaMain {
             // 결과: member.username = 회원1
             // 결과: member.username = 회원2
         }
+    }
+
+    // 양방향 연관관계 저장
+    public static void testSave2(EntityManager em) {
+        // 팀1 저장
+        Team team1 = new Team("team1", "팀1");
+        em.persist(team1);
+
+        // 회원1 저장
+        Member member1 = new Member("member1", "회원1");
+        member1.setTemm(team1); // 연관관계 설정 member1 -> team1
+        em.persist(member1);
+
+        // 회원2 저장
+        Member member2 = new Member("member2", "회원2");
+        member2.setTemm(team1); // 연관관계 설정 member2 -> team1
+        em.persist(member1);
     }
 
 }
