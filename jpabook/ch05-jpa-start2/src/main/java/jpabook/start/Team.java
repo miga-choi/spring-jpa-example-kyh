@@ -48,8 +48,15 @@ public class Team {
      * 어떤 연관관게를 주인으로 정할지는 mappedBy 속성을 사용하면 된다.
      * - 주인은 mappedBy 속성을 사용하지 않는다.
      * - 주인이 아니면 mappedBy 속성을 사용해서 속성의 값으로 연관관계의 주인을 지정해야 한다.
+     * ------------------------------------------------------------------------
+     * 연관관계의 주인은 외래 키가 있는 곳:
+     * 연관관계의 주인은 테이블에 외래 키가 있는 곳으로 정해야한다. 여기서는 회원 테이블이 외래 키를 가지고 있으므로 Member.team이 주인이 된다.
+     * 주인이 아닌 Team.members에는 mappedBy="team" 속성을 사용해서 주인이 아님을 설정한다.
+     * 그리고 mappedBy 속성의 값으로는 연관관계의 주인인 team을 주면 된다.
+     * 여기서 mappedBy의 값으로 사용된 team은 연관관계의 주인인 Member 엔티티의 team 필드를 말한다.
      */
-    @OneToMany(mappedBy = "team")
+    // 팀 -> 회원(Team.members) 방향
+    @OneToMany(mappedBy = "team") // MappedBy 속성 값은 연관관계의 주인인 Member.team
     private List<Member> members = new ArrayList<Member>();
 
     public Team() {
