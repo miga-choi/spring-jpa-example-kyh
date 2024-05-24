@@ -16,13 +16,14 @@ public class JpaMain {
 
         try {
             tx.begin(); // 트랜잭션 시작
-//            testSave(em);
-//            testSelect1(em);
-//            testSelect2(em);
-//            testUpdate(em);
-//            testDelete(em);
-//            biDirection(em);
-            testSave2(em);
+            // testSave(em);
+            // testSelect1(em);
+            // testSelect2(em);
+            // testUpdate(em);
+            // testDelete(em);
+            // biDirection(em);
+            // testSave2(em);
+            testSaveNonOwner(em);
             tx.commit(); // 트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,6 +109,13 @@ public class JpaMain {
         }
     }
 
+
+    /**
+     * 양방향 연관관계의 주의점:
+     * 양방향 연관관계를 설정하고 가장 흔히 하는 실수는 연관관계의 주인에는 값을 입력하지 않고.
+     * 주인이 아닌 곳에만 값을 입력하는 것이다.
+     * 데이터베이스에 외래 키 값이 정상적으로 저장되지 않으면 이것부터 의심해보자.
+     */
     // 양방향 연관관계 저장
     public static void testSave2(EntityManager em) {
         // 팀1 저장
@@ -116,13 +124,34 @@ public class JpaMain {
 
         // 회원1 저장
         Member member1 = new Member("member1", "회원1");
+        team1.getMembers().add(member1); // 무시 (연관관계의 주인이 아님)
         member1.setTemm(team1); // 연관관계 설정 member1 -> team1
         em.persist(member1);
 
         // 회원2 저장
         Member member2 = new Member("member2", "회원2");
+        team1.getMembers().add(member2); // 무시 (연관관계의 주인이 아님)
         member2.setTemm(team1); // 연관관계 설정 member2 -> team1
+        em.persist(member2);
+    }
+
+    // 주인이 아닌 곳에만 값을 설정하는 경우
+    public static void testSaveNonOwner(EntityManager em) {
+        // 회원1 저장
+        Member member1 = new Member("member1", "회원1");
         em.persist(member1);
+
+        // 회원2 저장
+        Member member2 = new Member("member2", "회원2");
+        em.persist(member2);
+
+        Team team1 = new Team("team1", "팀1");
+
+        // 주인이 아닌 곳만 연관관계 설정
+        team1.getMembers().add(member1);
+        team1.getMembers().add(member2);
+
+        em.persist(team1);
     }
 
 }
