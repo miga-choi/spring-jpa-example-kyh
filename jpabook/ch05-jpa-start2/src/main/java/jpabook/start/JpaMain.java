@@ -42,12 +42,12 @@ public class JpaMain {
 
         // 회원1 저장
         Member member1 = new Member("member1", "회원1");
-        member1.setTemm(team1); // 연관관계 설정 member1 -> team1
+        member1.setTeam(team1); // 연관관계 설정 member1 -> team1
         em.persist(member1);
 
         // 회원2 저장
         Member member2 = new Member("member2", "회원2");
-        member2.setTemm(team1); // 연관관계 설정 member2 -> team1
+        member2.setTeam(team1); // 연관관계 설정 member2 -> team1
         em.persist(member2);
     }
 
@@ -85,16 +85,16 @@ public class JpaMain {
 
         // 회원1에 새로운 팀2 설정
         Member member = em.find(Member.class, "member1");
-        member.setTemm(team2);
+        member.setTeam(team2);
     }
 
     public static void testDelete(EntityManager em) {
         Member member1 = em.find(Member.class, "member1");
-        member1.setTemm(null); // 연관관계 제거
+        member1.setTeam(null); // 연관관계 제거
 
         Team team1 = em.find(Team.class, "team1");
         Member member2 = em.find(Member.class, "member2");
-        member2.setTemm(null); // 회원2 연관관계 제거
+        member2.setTeam(null); // 회원2 연관관계 제거
         em.remove(team1);
     }
 
@@ -125,13 +125,13 @@ public class JpaMain {
         // 회원1 저장
         Member member1 = new Member("member1", "회원1");
         team1.getMembers().add(member1); // 무시 (연관관계의 주인이 아님)
-        member1.setTemm(team1); // 연관관계 설정 member1 -> team1
+        member1.setTeam(team1); // 연관관계 설정 member1 -> team1
         em.persist(member1);
 
         // 회원2 저장
         Member member2 = new Member("member2", "회원2");
         team1.getMembers().add(member2); // 무시 (연관관계의 주인이 아님)
-        member2.setTemm(team1); // 연관관계 설정 member2 -> team1
+        member2.setTeam(team1); // 연관관계 설정 member2 -> team1
         em.persist(member2);
     }
 
@@ -173,8 +173,8 @@ public class JpaMain {
         // 회원2
         Member member2 = new Member("member2", "회원2");
 
-        member1.setTemm(team1); // 연관관계 설정 member1 -> team1
-        member2.setTemm(team1); // 연관관계 설정 member2 -> team1
+        member1.setTeam(team1); // 연관관계 설정 member1 -> team1
+        member2.setTeam(team1); // 연관관계 설정 member2 -> team1
 
         List<Member> members = team1.getMembers();
         System.out.println("members.size = " + members.size());
@@ -195,10 +195,10 @@ public class JpaMain {
         // 회원2
         Member member2 = new Member("member2", "회원2");
 
-        member1.setTemm(team1);          // 연관관계 설정 member1 -> team1
+        member1.setTeam(team1);          // 연관관계 설정 member1 -> team1
         team1.getMembers().add(member1); // 연관관계 설정 team1 -> member1
 
-        member2.setTemm(team1);          // 연관관계 설정 member2 -> team1
+        member2.setTeam(team1);          // 연관관계 설정 member2 -> team1
         team1.getMembers().add(member2); // 연관관계 설정 team1 -> member2
 
         List<Member> members = team1.getMembers();
@@ -222,7 +222,7 @@ public class JpaMain {
         Member member1 = new Member("member1", "회원1");
 
         // 양방향 연관관계 설장
-        member1.setTemm(team1);          // 연관관계 설정 member1 -> team1
+        member1.setTeam(team1);          // 연관관계 설정 member1 -> team1
         team1.getMembers().add(member1); // 연관관계 설정 team1 -> member1
         em.persist(member1);
 
@@ -230,8 +230,24 @@ public class JpaMain {
         Member member2 = new Member("member2", "회원2");
 
         // 양방향 연관관계 설장
-        member2.setTemm(team1);          // 연관관계 설정 member2 -> team1
+        member2.setTeam(team1);          // 연관관계 설정 member2 -> team1
         team1.getMembers().add(member2); // 연관관계 설정 team1 -> member2
+        em.persist(member2);
+    }
+
+    public static void test_ORM_양방향_리팩토링(EntityManager em) {
+        // 팀1 저장
+        Team team1 = new Team("team1", "팀1");
+        em.persist(team1);
+
+        // 회원1
+        Member member1 = new Member("member1", "회원1");
+        member1.setTeam(team1); // 연관관계 설정 member1 -> team1
+        em.persist(member1);
+
+        // 회원2
+        Member member2 = new Member("member2", "회원2");
+        member2.setTeam(team1); // 연관관계 설정 member2 -> team1
         em.persist(member2);
     }
 

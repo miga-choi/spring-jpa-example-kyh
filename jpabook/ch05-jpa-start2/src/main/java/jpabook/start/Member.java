@@ -109,7 +109,15 @@ public class Member {
     }
 
     // 연관관계 설정
-    public void setTemm(Team temm) {
-        this.team = temm;
+    public void setTeam(Team team) {
+        this.team = team;
+
+        // 연관관계 편의 메소드
+        /**
+         * 양방향 연관관계는 결국 양쪽 다 신경 써야 한다.
+         * 양방향 관계에서 두 코드는 하나인 것처럼 사용하는 것이 안전하다.
+         * 여기서 양방향 관계를 모두 설정하도록 변경.
+         */
+        team.getMembers().add(this);
     }
 }
