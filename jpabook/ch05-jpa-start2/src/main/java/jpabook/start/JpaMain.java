@@ -23,7 +23,8 @@ public class JpaMain {
             // biDirection(em);
             // testSave2(em);
             // testSaveNonOwner(em);
-            test_ORM_양방향(em);
+            // test_ORM_양방향(em);
+            test_ORM_양방향_리팩토링(em);
             tx.commit(); // 트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();

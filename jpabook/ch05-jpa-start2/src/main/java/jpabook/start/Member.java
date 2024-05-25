@@ -110,14 +110,27 @@ public class Member {
 
     // 연관관계 설정
     public void setTeam(Team team) {
-        this.team = team;
-
         // 연관관계 편의 메소드
         /**
          * 양방향 연관관계는 결국 양쪽 다 신경 써야 한다.
          * 양방향 관계에서 두 코드는 하나인 것처럼 사용하는 것이 안전하다.
          * 여기서 양방향 관계를 모두 설정하도록 변경.
+         * ------------------------------------------------------------------------
+         * * 연관관계 편의 메소드 작성 시 주의사항:
+         * 사실 setTeam() 메소드에는 버그가 있다(리팩토링 전에도 버그는 있었다.
+         * ex)
+         * - member1.setTeam(teamA); // 1
+         * - member1.setTeam(teamB); // 2
+         * - Member findMember = teamA.getMember(); // member1이 여전히 조회된다.
+         * 설명)
+         * - teamB로 변경할 때 teamA -> member1 관계를 제거하지 않았다.
+         * - 연관관계를 변경할 때는 기존 팀이 있으면 기존 팀과 회원의 연관관계를 삭제하는 코드를 추가해야 한다.
          */
+        // 기존 팀관 관계를 제거
+        if (this.team != null) {
+            this.team.getMembers().remove(this);
+        }
+        this.team = team;
         team.getMembers().add(this);
     }
 }
