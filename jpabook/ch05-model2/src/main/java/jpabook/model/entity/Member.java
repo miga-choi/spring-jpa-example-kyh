@@ -9,8 +9,8 @@ import java.util.List;
  */
 @Entity
 public class Member {
-
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
@@ -23,7 +23,7 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<Order>();
 
-    //Getter, Setter
+    // Getter, Setter
     public Long getId() {
         return id;
     }
