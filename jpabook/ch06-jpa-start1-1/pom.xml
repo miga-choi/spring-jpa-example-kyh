@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>jpabook</groupId>
-    <artifactId>ch06-jpa-start1</artifactId>
+    <artifactId>ch06-jpa-start1-1</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
