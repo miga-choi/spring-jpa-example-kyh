@@ -1,7 +1,6 @@
 package jpabook.start;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * 다대다 [N:N]
@@ -29,7 +28,6 @@ public class JpaMain {
         try {
             tx.begin(); // 트랜잭션 시작
             save(em);
-            findInverse(em);
             tx.commit(); // 트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,24 +40,40 @@ public class JpaMain {
     }
 
     public static void save(EntityManager em) {
+        // 회원 저장
+        Member member1 = new Member();
+        member1.setId("member1");
+        member1.setUsername("회원1");
+        em.persist(member1);
+
+        // 상품 저장
         Product productA = new Product();
         productA.setId("productA");
         productA.setName("상품A");
         em.persist(productA);
 
-        Member member1 = new Member();
-        member1.setId("member1");
-        member1.setUsername("회원1");
-        member1.addProduct(productA);
-        em.persist(member1);
+        // 회원상품 저장
+        MemberProduct memberProduct = new MemberProduct();
+        memberProduct.setMember(member1);   // 주문 회원 - 연관관계 설정
+        memberProduct.setProduct(productA); // 주문 상품 - 연관관계 설정
+        memberProduct.setOrderAmount(2);    // 주문 수량
+        em.persist(memberProduct);
     }
 
-    public static void findInverse(EntityManager em) {
-        Product product = em.find(Product.class, "productA");
-        List<Member> members = product.getMembers();
-        for (Member member : members) {
-            System.out.println("member = " + member.getUsername());
-        }
+    public static void find(EntityManager em) {
+        // 기본 키 값 생성
+        MemberProductId memberProductId = new MemberProductId();
+        memberProductId.setMember("member1");
+        memberProductId.setProduct("productA");
+
+        MemberProduct memberProduct = em.find(MemberProduct.class, memberProductId);
+
+        Member member = memberProduct.getMember();
+        Product product = memberProduct.getProduct();
+
+        System.out.println("member = " + member.getUsername());
+        System.out.println("product = " + product.getName());
+        System.out.println("orderAmount = " + memberProduct.getOrderAmount());
     }
 
 }
