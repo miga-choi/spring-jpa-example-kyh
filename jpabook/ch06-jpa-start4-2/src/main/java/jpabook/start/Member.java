@@ -13,8 +13,6 @@ public class Member {
     private String username;
 
     /**
-     * 다대다: 단방향
-     * ------------------------------------------------------------------------
      * 회원 엔티티와 상품 엔티티를 "@ManyToMany"로 매핑했다.
      * 여기서 중요한 점은 "@ManyToMany"와 "@JoinTable"을 사용해서 연결 테이블을 바로 매핑한 것이다.
      * 따라서 회원과 상품을 연결하는 회원_상품(Member_Product) 엔티티 없이 매핑을 완료할 수 있다.
@@ -34,7 +32,6 @@ public class Member {
             inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID")
     )
     private List<Product> products = new ArrayList<Product>();
-
 
     // Getter, Setter
     public String getId() {
@@ -59,5 +56,13 @@ public class Member {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    /**
+     * 양방향 연관관계는 연관관계 편의 메소드를 추가해서 관리하는 것이 편리하다.
+     */
+    public void addProduct(Product product) {
+        products.add(product);
+        product.getMembers().add(this);
     }
 }

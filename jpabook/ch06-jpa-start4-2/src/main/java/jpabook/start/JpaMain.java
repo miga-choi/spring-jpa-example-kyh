@@ -29,7 +29,7 @@ public class JpaMain {
         try {
             tx.begin(); // 트랜잭션 시작
             save(em);
-            find(em);
+            findInverse(em);
             tx.commit(); // 트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,33 +50,16 @@ public class JpaMain {
         Member member1 = new Member();
         member1.setId("member1");
         member1.setUsername("회원1");
-        member1.getProducts().add(productA); // 연관관계 설정
+        member1.addProduct(productA);
         em.persist(member1);
-
-        /*
-            실행 SQL:
-            INSERT INTO PRODUCT ...
-            INSERT INTO MEMBER ...
-            INSERT INTO MEMBER_PRODUCT ...
-         */
     }
 
-    public static void find(EntityManager em) {
-        Member member = em.find(Member.class, "member1");
-        List<Product> products = member.getProducts(); // 객체 그래프 탐색
-        for (Product product : products) {
-            System.out.println("product.name = " + product.getName());
+    public static void findInverse(EntityManager em) {
+        Product product = em.find(Product.class, "productA");
+        List<Member> members = product.getMembers();
+        for (Member member : members) {
+            System.out.println("member = " + member.getUsername());
         }
-
-        /*
-            실행 SQL:
-            SELECT * FROM MEMBER_PRODUCT MP
-            INNER JOIN PRODUCT P ON MP.PRODUCT_ID=P.PRODUCT_ID
-            WHERE MP.MEMBER_ID=?
-            ------------------------------------------------------------------------
-            실행된 SQL을 보면 연결 테이블인 MEMBER_PRODUCT와 상품 테이블을 조인해서 연관된 상품을 조회한다.
-            @ManyToMany 덕분에 복잡한 다대다 관계를 애플리케이션에서는 아주 단순하게 사용할 수 있다.
-         */
     }
 
 }
