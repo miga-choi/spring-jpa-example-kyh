@@ -5,18 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by holyeye on 2014. 3. 11..
+ * 회원
+ * ------------------------------------------------------------------------
+ * 회원(Member) - [1:N] - 주문(Order)
  */
-
 @Entity
 public class Member {
-
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
     private String name;
-
     private String city;
     private String street;
     private String zipcode;
@@ -24,6 +24,7 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<Order>();
 
+    // Getter, Setter
     public Long getId() {
         return id;
     }

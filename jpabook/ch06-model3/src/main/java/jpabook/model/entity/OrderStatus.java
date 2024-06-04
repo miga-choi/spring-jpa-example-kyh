@@ -1,8 +1,9 @@
 package jpabook.model.entity;
 
 /**
- * Created by holyeye on 2014. 3. 11..
+ * 주문 상태
  */
 public enum OrderStatus {
-    ORDER, CANCEL
+    ORDER,
+    CANCEL
 }

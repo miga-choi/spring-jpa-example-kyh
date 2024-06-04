@@ -6,76 +6,43 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by holyeye on 2014. 3. 11..
+ * 주문
+ * ------------------------------------------------------------------------
+ * 회원(Member) - [1:N] - 주문(Order)
+ * 주문(Order) - [1:N] - 주문상품(Item)
+ * 주문(Order) - [1:N] - 배송(Delivery)
  */
 @Entity
 @Table(name = "ORDERS")
 public class Order {
-
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "ORDER_ID")
     private Long id;
 
+    private Date orderDate; // 주문 시간
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status; // 주문 상태
+
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
-    private Member member;      //주문 회원
+    private Member member; // 주문 회원
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<OrderItem>();
+    private List<Item> items = new ArrayList<Item>();
 
     @OneToOne
     @JoinColumn(name = "DELIVERY_ID")
-    private Delivery delivery;  //배송정보
+    private Delivery delivery; // 배송 정보
 
-    private Date orderDate;     //주문시간
-
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;//주문상태
-
-
-    //==연관관계 메서드==//
-    public void setMember(Member member) {
-        //기존 관계 제거
-        if (this.member != null) {
-            this.member.getOrders().remove(this);
-        }
-        this.member = member;
-        member.getOrders().add(this);
-    }
-
-    public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
-        orderItem.setOrder(this);
-    }
-
-    public void setDelivery(Delivery delivery) {
-        this.delivery = delivery;
-        delivery.setOrder(this);
-    }
-
-    //Getter, Setter
+    // Getter, Setter
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Member getMember() {
-        return member;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public Delivery getDelivery() {
-        return delivery;
     }
 
     public Date getOrderDate() {
@@ -94,12 +61,32 @@ public class Order {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", orderDate=" + orderDate +
-                ", status=" + status +
-                '}';
+    public Member getMember() {
+        return member;
+    }
+
+    // == 연관관계 메소드 == //
+    public void setMember(Member member) {
+        // 기존 관계 제거
+        if (this.member != null) {
+            this.member.getOrders().remove(this);
+        }
+        this.member = member;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public Delivery getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
     }
 }

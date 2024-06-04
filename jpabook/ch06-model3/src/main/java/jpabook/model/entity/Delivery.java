@@ -1,43 +1,35 @@
 package jpabook.model.entity;
 
-
 import javax.persistence.*;
 
+
 /**
- * Created by holyeye on 2014. 3. 11..
+ * 배송
  */
 @Entity
 public class Delivery {
-
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "DELIVERY_ID")
     private Long id;
-
-    @OneToOne(mappedBy = "delivery")
-    private Order order;
 
     private String city;
     private String street;
     private String zipcode;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatus status; //ENUM [READY(준비), COMP(배송)]
+    private DeliveryStatus status;
 
-    //Getter, Setter
+    @OneToOne(mappedBy = "delivery")
+    private Order order;
+
+    // Getter, Setter
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
     }
 
     public String getCity() {
@@ -70,5 +62,13 @@ public class Delivery {
 
     public void setStatus(DeliveryStatus status) {
         this.status = status;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
