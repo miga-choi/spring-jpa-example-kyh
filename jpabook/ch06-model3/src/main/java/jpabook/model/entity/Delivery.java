@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 /**
  * 배송
+ * ------------------------------------------------------------------------
+ * 배송(Delivery) -[1:N]- 주문(Order)
  */
 @Entity
 public class Delivery {

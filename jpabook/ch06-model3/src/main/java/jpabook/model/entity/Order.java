@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * 주문
  * ------------------------------------------------------------------------
- * 회원(Member) - [1:N] - 주문(Order)
- * 주문(Order) - [1:N] - 주문상품(Item)
- * 주문(Order) - [1:N] - 배송(Delivery)
+ * 주문(Order) - [N:1] - 회원(Member)
+ * 주문(Order) - [1:N] - 상품(Item)
+ * 주문(Order) - [1:1] - 배송(Delivery)
  */
 @Entity
 @Table(name = "ORDERS")
