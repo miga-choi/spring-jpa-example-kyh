@@ -37,6 +37,7 @@ public class JpaMain {
 
         try {
             tx.begin(); // 트랜잭션 시작
+            save(em);
             tx.commit(); // 트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,6 +47,26 @@ public class JpaMain {
         }
 
         emf.close(); // 엔티티 매니저 팩토리 종료
+    }
+
+    /*
+        저장 코드를 보면 식별자 클래스인 ParentId가 보이지 않는데, em.persist()를 호출하면서 영속성 컨텍스트에 엔티티를 등록하기 직전에 내부에서
+        Parent.id1, Parent.id2 값을 사용해서 식별자 클래스인 ParentId를 생성하고 영속성 컨텍스트의 키로 사용한다.
+     */
+    public static void save(EntityManager em) {
+        Parent parent = new Parent();
+        parent.setId1("myId1"); // 식별자
+        parent.setId2("myId2"); // 식별자
+        parent.setName("parentName");
+        em.persist(parent);
+    }
+
+    /*
+        조회 코드를 보면 식별자 클래스인 ParentId를 사용해서 엔티티를 조회한다.
+     */
+    public static void find(EntityManager em) {
+        ParentId parentId = new ParentId("myId1", "myId2");
+        Parent parent = em.find(Parent.class, parentId);
     }
 
 }
