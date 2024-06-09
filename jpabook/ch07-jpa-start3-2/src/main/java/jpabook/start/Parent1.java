@@ -28,21 +28,21 @@ import javax.persistence.IdClass;
     ------------------------------------------------------------------------
     @IdClass를 사용할 때 식별자 클래스는 다음 조거을 만족해야 한다.
         - 식별자 클래스의 속성명과 엔티티에서 사용하는 식별자의 속성명이 같아야 한다.
-          예제의 Parent.id1과 Parent.id1, 그리고 Parent.id2와 ParentId.id2가 같다.
+          예제의 Parent1.id1과 Parent1.id1, 그리고 Parent1.id2와 Parent1Id.id2가 같다.
         - Serializeable 인터페이스를 구현해야 한다.
         - equals, hashCode를 구현해야 한다.
         - 기본 생성자가 있어야 한다.
         - 식별자 클래스는 public이어야 한다.
  */
-@IdClass(ParentId.class)
-public class Parent {
+@IdClass(Parent1Id.class)
+public class Parent1 {
     @Id
-    @Column(name = "PARENT_ID1")
-    private String id1; // ParentId.id1과 연결
+    @Column(name = "PARENT1_ID1")
+    private String id1; // Parent1Id.id1과 연결
 
     @Id
-    @Column(name = "PARENT_ID2")
-    private String id2; // ParentId.id2과 연결
+    @Column(name = "PARENT1_ID2")
+    private String id2; // Parent1Id.id2과 연결
 
     private String name;
 

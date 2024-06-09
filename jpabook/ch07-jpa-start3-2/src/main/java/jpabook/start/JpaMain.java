@@ -37,7 +37,6 @@ public class JpaMain {
 
         try {
             tx.begin(); // 트랜잭션 시작
-            save(em);
             tx.commit(); // 트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,23 +49,42 @@ public class JpaMain {
     }
 
     /*
-        저장 코드를 보면 식별자 클래스인 ParentId가 보이지 않는데, em.persist()를 호출하면서 영속성 컨텍스트에 엔티티를 등록하기 직전에 내부에서
-        Parent.id1, Parent.id2 값을 사용해서 식별자 클래스인 ParentId를 생성하고 영속성 컨텍스트의 키로 사용한다.
+        저장 코드를 보면 식별자 클래스인 Parent1Id가 보이지 않는데, em.persist()를 호출하면서 영속성 컨텍스트에 엔티티를 등록하기 직전에 내부에서
+        Parent1.id1, Parent1.id2 값을 사용해서 식별자 클래스인 Parent1Id를 생성하고 영속성 컨텍스트의 키로 사용한다.
      */
-    public static void save(EntityManager em) {
-        Parent parent = new Parent();
-        parent.setId1("myId1"); // 식별자
-        parent.setId2("myId2"); // 식별자
-        parent.setName("parentName");
-        em.persist(parent);
+    public static void save1(EntityManager em) {
+        Parent1 parent1 = new Parent1();
+        parent1.setId1("myId1-1"); // 식별자
+        parent1.setId2("myId1-2"); // 식별자
+        parent1.setName("parentName");
+        em.persist(parent1);
     }
 
     /*
-        조회 코드를 보면 식별자 클래스인 ParentId를 사용해서 엔티티를 조회한다.
+        조회 코드를 보면 식별자 클래스인 Parent1Id를 사용해서 엔티티를 조회한다.
      */
-    public static void find(EntityManager em) {
-        ParentId parentId = new ParentId("myId1", "myId2");
-        Parent parent = em.find(Parent.class, parentId);
+    public static void find1(EntityManager em) {
+        Parent1Id parent1Id = new Parent1Id("myId1-1", "myId1-2");
+        Parent1 parent1 = em.find(Parent1.class, parent1Id);
+    }
+
+    /*
+        저장하는 코드를 보면 식별자 클래스 parent2Id를 직접 생성해서 사용한다.
+     */
+    public static void save2(EntityManager em) {
+        Parent2 parent2 = new Parent2();
+        Parent2Id parent2Id = new Parent2Id("myId2-1", "myId2-2");
+        parent2.setId(parent2Id);
+        parent2.setName("parentName");
+        em.persist(parent2);
+    }
+
+    /*
+        조회 코드도 식별자 클래스 parent2Id를 직접 사용한다.
+     */
+    public static void find2(EntityManager em) {
+        Parent2Id parent2Id = new Parent2Id("myId2-1", "myId2-2");
+        Parent2 parent2 = em.find(Parent2.class, parent2Id);
     }
 
 }

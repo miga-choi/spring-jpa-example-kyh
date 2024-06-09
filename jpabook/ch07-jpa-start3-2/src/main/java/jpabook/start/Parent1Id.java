@@ -2,14 +2,14 @@ package jpabook.start;
 
 import java.io.Serializable;
 
-public class ParentId implements Serializable {
-    private String id1; // Parent.id1 매핑
-    private String id2; // Parent.id2 매핑
+public class Parent1Id implements Serializable {
+    private String id1; // Parent1.id1 매핑
+    private String id2; // Parent1.id2 매핑
 
-    public ParentId() {
+    public Parent1Id() {
     }
 
-    public ParentId(String id1, String id2) {
+    public Parent1Id(String id1, String id2) {
         this.id1 = id1;
         this.id2 = id2;
     }

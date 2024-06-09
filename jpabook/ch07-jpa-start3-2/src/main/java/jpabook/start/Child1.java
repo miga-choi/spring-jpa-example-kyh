@@ -11,7 +11,7 @@ import javax.persistence.*;
     참고로 예제처럼 @JoinColumn의 name 속성과 referencedColumnName 속성의
     값이 같으면 referencedColumn은 생략해도 된다.
  */
-public class Child {
+public class Child1 {
     @Id
     private String id;
 
@@ -20,7 +20,7 @@ public class Child {
             @JoinColumn(name = "PARENT_ID1", referencedColumnName = "PARENT_ID1"),
             @JoinColumn(name = "PARENT_ID2", referencedColumnName = "PARENT_ID2")
     })
-    private Parent parent;
+    private Parent1 parent1;
 
     // Getter, Setter
     public String getId() {
@@ -31,11 +31,11 @@ public class Child {
         this.id = id;
     }
 
-    public Parent getParent() {
-        return parent;
+    public Parent1 getParent() {
+        return parent1;
     }
 
-    public void setParent(Parent parent) {
-        this.parent = parent;
+    public void setParent(Parent1 parent1) {
+        this.parent1 = parent1;
     }
 }
