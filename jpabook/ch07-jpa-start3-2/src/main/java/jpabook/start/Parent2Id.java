@@ -23,6 +23,23 @@ public class Parent2Id implements Serializable {
         this.id2 = id2;
     }
 
+    // Getter, Setter
+    public String getId1() {
+        return id1;
+    }
+
+    public void setId1(String id1) {
+        this.id1 = id1;
+    }
+
+    public String getId2() {
+        return id2;
+    }
+
+    public void setId2(String id2) {
+        this.id2 = id2;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);

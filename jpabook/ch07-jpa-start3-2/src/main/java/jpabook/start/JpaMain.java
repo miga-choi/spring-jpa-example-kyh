@@ -87,4 +87,33 @@ public class JpaMain {
         Parent2 parent2 = em.find(Parent2.class, parent2Id);
     }
 
+    /*
+        이것은 순수한 자바 코드다. parent1Id와 parent2Id 인스턴스 둘 다
+        myId1-1, myId1-2라는 같은 값을 가지고 있지만 인스턴스는 다르다.
+
+        equals()를 적절히 오버라이딩했다면 참이겠지만 equals()를
+        적절히 오버라이딩하지 않았다면 결과는 거짓이다.
+        왜나하면 자바의 모든 클래스는 기본으로 Object 클래스를 상속받는데 이 클래스가 제공하는
+        기본 equals()는 인스턴스 참조 값 비교인 == 비교(동일성 비교)를 하기 때문이다.
+
+        영속성 컨텍스트는 엔티티의 식별자를 키로 사용해서 엔티티를 관리한다.
+        그리고 식별자를 비교할 때 equals()와 hashCode()를 사용한다.
+        따라서 식별자 객체의 동등성(equals 비교)이 지켜지지 않으면 예상과 다른 엔티티가 조회되거나
+        엔티티를 찾을 수 없는 등 영속성 컨텍스트가 엔티티를 관리하는 데 심각한 문제가 발생한다.
+        따라서 복합 키는 equals()와 hashCode()를 필수로 구현해야 한다.
+        식별자 클래스는 보통 equals()와 hashCode()를 구현할 때 모든 필드를 사용한다.
+     */
+    public static void testEquals(EntityManager em) {
+        Parent1Id parent1Id1 = new Parent1Id();
+        parent1Id1.setId1("myId1-1");
+        parent1Id1.setId2("myId1-2");
+
+        Parent1Id parent1Id2 = new Parent1Id();
+        parent1Id2.setId1("myId1-1");
+        parent1Id2.setId2("myId1-2");
+
+        boolean result = parent1Id1.equals(parent1Id2); // -> false
+        System.out.println(result);
+    }
+
 }
