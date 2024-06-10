@@ -27,6 +27,13 @@ import javax.persistence.*;
     ------------------------------------------------------------------------
     JPA는 복합 키를 지원하기 위해 @IdClass와 @EmbeddedId 2가지 방법을 제공하는데
     @IdClass는 관계형 데이터베이스에 가까운 방법이고 @EmbeddedId는 좀 더 객체지향에 가까운 방법이다.
+    ------------------------------------------------------------------------
+    @IdClass와 @EmbeddedId는 각각 장단점이 있으므로 본인의 취향에 맞는 것을 일관성 있게 사용하면 된다.
+    @EmbeddedId가 @IdClass와 비교해서 더 객체지향적이고 중복도 없어서 좋아보이긴 하지만 특정 상황에 JPQL이 조금 더 길어질 수 있다.
+
+    ex)
+        @EmbeddedId: em.createQuery("select p.id.id1, p.id.id2 from Parent p");
+        @IdClass: em.createQuery("select p.id1, p.id2 from Parent p");
  */
 public class JpaMain {
 
