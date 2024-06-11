@@ -9,6 +9,8 @@ public class Child {
     /*
         식별 관계는 기본 키와 외래 키를 같이 매핑해야 한다.
         따라서 식별자 매핑인 @Id와 연관관계 매핑인 @ManyToOne을 같이 사용하면 된다.
+
+        @Id로 기본 키를 매핑하면서 @ManyToOne과 @JoinColumn으로 외래 키를 매핑한다.
      */
     @Id
     @ManyToOne
