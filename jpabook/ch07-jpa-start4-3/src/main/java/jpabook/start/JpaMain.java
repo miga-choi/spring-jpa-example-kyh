@@ -5,16 +5,16 @@ import javax.persistence.*;
 /*
     일대다 조인 테이블
     ------------------------------------------------------------------------------------------------------------
-    일대다 관계를 만들려면 조인 테이블의 컬럼 중 다(N)와 관련된 컬럼인 CHILD_ID에
-    유니크 제약조건을 걸어야 한다 (CHILD_ID는 기본 키이므로 유니크 제약조건이 걸려 있다).
+    다대일은 일대다에서 방향만 반대이므로 조인 테이블 모양은 일대다에서 설명한 예제와 같다.
+    다대일, 일대다 양방향 관계로 매핑해보자.
 
     에제1) 조인 컬럼
-        PARENT -[1:N]-> CHILD
+        PARENT <-[1:N]-> CHILD
         - PARENT: PARENT_ID (PK), NAME
         - CHILD: CHILD_ID (PK), PARENT_ID (FK), NAME
 
     에제2) 조인 테이블
-        PARENT -[1:N]-> PARENT_CHILD -[1:1]-> CHILD
+        PARENT <-[1:N]-> PARENT_CHILD <-[1:1]-> CHILD
         - PARENT: PARENT_ID (PK), NAME
         - PARENT_CHILD: CHILD_ID (PK, FK), PARENT_ID (FK)
         - CHILD: CHILD_ID (PK), NAME
