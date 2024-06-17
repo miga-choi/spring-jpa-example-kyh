@@ -1,3 +1,4 @@
+// DeliveryStatus.java
 package jpabook.model.entity;
 
 /**

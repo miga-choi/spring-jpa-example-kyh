@@ -1,3 +1,4 @@
+// OrderItem.java
 package jpabook.model.entity;
 
 import jpabook.model.entity.item.Item;
@@ -10,23 +11,23 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ORDER_ITEM")
 public class OrderItem {
-
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "ORDER_ITEM_ID")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "ITEM_ID")
-    private Item item;      //주문 상품
+    private Item item;      // 주문 상품
 
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private Order order;    //주문
+    private Order order;    // 주문
 
-    private int orderPrice; //주문 가격
-    private int count;      //주문 수량
+    private int orderPrice; // 주문 가격
+    private int count;      // 주문 수량
 
-    //Getter, Setter
+    // Getter, Setter
     public Long getId() {
         return id;
     }
@@ -69,10 +70,10 @@ public class OrderItem {
 
     @Override
     public String toString() {
-        return "OrderItem{" +
+        return "OrderItem { " +
                 "id=" + id +
                 ", buyPrice=" + orderPrice +
                 ", count=" + count +
-                '}';
+                " }";
     }
 }

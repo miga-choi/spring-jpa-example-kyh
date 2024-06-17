@@ -1,3 +1,4 @@
+// Member.java
 package jpabook.model.entity;
 
 import javax.persistence.*;
@@ -10,8 +11,8 @@ import java.util.List;
 
 @Entity
 public class Member extends BaseEntity {
-
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
@@ -24,8 +25,7 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<Order>();
 
-    //Getter, Setter
-
+    // Getter, Setter
     public Long getId() {
         return id;
     }

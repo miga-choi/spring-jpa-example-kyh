@@ -1,3 +1,4 @@
+// Order.java
 package jpabook.model.entity;
 
 import javax.persistence.*;
@@ -11,7 +12,6 @@ import java.util.List;
 @Entity
 @Table(name = "ORDERS")
 public class Order extends BaseEntity {
-
     @Id
     @GeneratedValue
     @Column(name = "ORDER_ID")
@@ -26,14 +26,14 @@ public class Order extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "DELIVERY_ID")
-    private Delivery delivery;  //배송정보
+    private Delivery delivery;  // 배송정보
 
-    private Date orderDate;     //주문시간
+    private Date orderDate;     // 주문시간
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;//주문상태
+    private OrderStatus status; // 주문상태
 
-    //==연관관계 메서드==//
+    // == 연관관계 메서드 == //
     public void setMember(Member member) {
         this.member = member;
         member.getOrders().add(this);
@@ -49,7 +49,7 @@ public class Order extends BaseEntity {
         delivery.setOrder(this);
     }
 
-    //Getter, Setter
+    // Getter, Setter
     public Long getId() {
         return id;
     }
@@ -92,10 +92,10 @@ public class Order extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "Order { " +
                 "id=" + id +
                 ", orderDate=" + orderDate +
                 ", status=" + status +
-                '}';
+                " }";
     }
 }

@@ -1,3 +1,4 @@
+// Delivery.java
 package jpabook.model.entity;
 
 
@@ -8,8 +9,8 @@ import javax.persistence.*;
  */
 @Entity
 public class Delivery {
-
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "DELIVERY_ID")
     private Long id;
 
@@ -21,9 +22,9 @@ public class Delivery {
     private String zipcode;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatus status; //ENUM [READY(준비), COMP(배송)]
+    private DeliveryStatus status; // ENUM [READY(준비), COMP(배송)]
 
-    //Getter, Setter
+    // Getter, Setter
     public Long getId() {
         return id;
     }
