@@ -131,7 +131,7 @@ public class JpaMain {
     public static void printUserAndTeam(EntityManager em, String memberId) {
         Member member = em.find(Member.class, memberId);
         Team team = member.getTeam();
-        System.out.println("회원 이름: " + member.getUsername());
+        System.out.println("회원 이름: " + member.getName());
         System.out.println("소속팀: " + team.getName());
     }
 
@@ -150,7 +150,55 @@ public class JpaMain {
      */
     public static void printUser(EntityManager em, String memberId) {
         Member member = em.find(Member.class, memberId);
-        System.out.println("회원 이름: " + member.getUsername());
+        System.out.println("회원 이름: " + member.getName());
+    }
+
+    /*
+        JPA에서 식별자로 엔티티 하나를 조회할 때는 EntityManager.find()를 사용한다.
+
+        이 메소드는 영속성 컨텍스트에 엔티티가 없으면 데이터베이스를 조회한다.
+
+        이렇게 엔티티를 직접 조회하면 조회한 엔티티를 실제 사용하든 사용하지 않든 데이터베이스를 조회하게 된다.
+     */
+    public static void getFromDB(EntityManager em, String memberId) {
+        Member member = em.find(Member.class, "member1");
+    }
+
+    /*
+        엔티티를 실제 사용하는 시점까지 데이터베이스 조회를 미루고 싶으면 EntityManager.getReference() 메소드를 사용하면 된다.
+
+        이 메소드를 호출할 때 JPA는 데이터베이스를 조회하지 않고 실제 엔티티 객체도 생성하지 않는다.
+        대신에 데이터베이스 접근을 위임한 프록시 객체를 반환한다.
+     */
+    public static void getFromProxy(EntityManager em, String memberId) {
+        Member member = em.getReference(Member.class, "member1");
+    }
+
+    /*
+        프록시 초기화 예제
+     */
+    public static void proxyInitializeExample(EntityManager em) {
+        // MemberProxy 반환
+        Member member = em.getReference(Member.class, "id1");
+        member.getName(); // 1. getName();
+    }
+
+    /*
+        준영속 상태와 초기화
+        ------------------------------------------------------------------------------------------------------------
+        준영속 상태와 초기화 관련된 코드
+     */
+    public static void proxyInitialize() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        // MemberProxy 반환
+        Member member = em.getReference(Member.class, "id1");
+        tx.commit();
+        em.close(); // 영속성 컨텍스트 종료
+
+        member.getName(); // 준영속 상태 초기화 시도, org.hibernate.LazyInitializationException 예외 발생
     }
 
 }

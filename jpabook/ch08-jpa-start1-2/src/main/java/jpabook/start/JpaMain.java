@@ -53,7 +53,7 @@ public class JpaMain {
     public static void printUserAndTeam(EntityManager em, String memberId) {
         Member member = em.find(Member.class, memberId);
         Team team = member.getTeam();
-        System.out.println("회원 이름: " + member.getUsername());
+        System.out.println("회원 이름: " + member.getName());
         System.out.println("소속팀: " + team.getName());
     }
 
@@ -72,7 +72,63 @@ public class JpaMain {
      */
     public static void printUser(EntityManager em, String memberId) {
         Member member = em.find(Member.class, memberId);
-        System.out.println("회원 이름: " + member.getUsername());
+        System.out.println("회원 이름: " + member.getName());
+    }
+
+    /*
+        JPA에서 식별자로 엔티티 하나를 조회할 때는 EntityManager.find()를 사용한다.
+
+        이 메소드는 영속성 컨텍스트에 엔티티가 없으면 데이터베이스를 조회한다.
+
+        이렇게 엔티티를 직접 조회하면 조회한 엔티티를 실제 사용하든 사용하지 않든 데이터베이스를 조회하게 된다.
+     */
+    public static void getFromDB(EntityManager em, String memberId) {
+        Member member = em.find(Member.class, "member1");
+    }
+
+    /*
+        엔티티를 실제 사용하는 시점까지 데이터베이스 조회를 미루고 싶으면 EntityManager.getReference() 메소드를 사용하면 된다.
+
+        이 메소드를 호출할 때 JPA는 데이터베이스를 조회하지 않고 실제 엔티티 객체도 생성하지 않는다.
+        대신에 데이터베이스 접근을 위임한 프록시 객체를 반환한다.
+     */
+    public static void getFromProxy(EntityManager em, String memberId) {
+        Member member = em.getReference(Member.class, "member1");
+    }
+
+    /*
+        프록시 초기화 예제
+     */
+    public static void proxyInitializeExample(EntityManager em) {
+        // MemberProxy 반환
+        Member member = em.getReference(Member.class, "id1");
+        member.getName(); // 1. getName();
+    }
+
+    /*
+        엔티티 프록시로 조회할 때 식별자(PK) 값을 파라미터로 전달하는데 프록시 객체는 이 식별자 값을 보관한다.
+        ------------------------------------------------------------------------------------------------------------
+        프록시 객체는 식별자 값을 가지고 있으므로 식별자 값을 조회하는 team.getId()를 호출해도 프록시를 초기화 하지 않는다.
+        단 엔티티 접근 방식을 프로퍼티(@Access(AccessType.PROPERTY))로 설정한 경우에만 초기화 하지 않는다.
+
+        엔티티 접근 방식을 필드(@Access(AccessType.FIELD))로 설정하면 JPA는 getId() 메소드가 id만 조회하는
+        메소드인지 다른 필드까지 활용해서 어떤일을 하는 메소드인지 알지 못하므로 프록시 객체를 초기화한다.
+     */
+    public static void findByProxy(EntityManager em) {
+        Team team = em.getReference(Team.class, "team1"); // 식별자 보관
+        team.getId(); // 초기화되지 않음
+    }
+
+    /*
+        프록시는 다음 코드처럼 연관관계를 설정할 때 유용하게 사용할 수 있다.
+        ------------------------------------------------------------------------------------------------------------
+        연관관계를 설정할 때는 식별자 값만 사용하므로 프록시를 사용하면 데이터베이스 접근 횟수를 줄일 수 있다.
+        참고로 연관관계를 설정할 때는 엔티티 접근 방식을 필드로 설정해도 프록시를 초기화 하지 않는다.
+     */
+    public static void setRelationship(EntityManager em) {
+        Member member = em.find(Member.class, "member1");
+        Team team = em.getReference(Team.class, "team1"); // SQL을 실행하지 않음
+        member.setTeam(team);
     }
 
 }
