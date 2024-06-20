@@ -1,18 +1,16 @@
 package jpabook.start;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
-public class Member {
+public class Team {
     @Id
-    @Column(name = "MEMBER_ID")
+    @Column(name = "TEAM_ID")
     private String id;
 
     private String name;
-
-    @ManyToOne(fetch = FetchType.EAGER) // 즉시 로딩
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
 
     // Getter, Setter
     public String getId() {
@@ -29,13 +27,5 @@ public class Member {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
     }
 }
